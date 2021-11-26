@@ -2,6 +2,8 @@ const { operationService } = require("../service");
 const ResponseApi = require("../payload/ApiResponse");
 const ApiError = require("../payload/ApiError");
 const { handleAsync } = require("../util/util");
+const status = require("http-status"); // import http status
+
 
 /**
  * @description
@@ -10,7 +12,7 @@ const { handleAsync } = require("../util/util");
 const getCountries = handleAsync(async (req, res) => {
   let counteries = await operationService.getCountries();
   res
-    .status(200)
+    .status(status.OK)
     .send(new ResponseApi(200, "successfully get countries", counteries));
 });
 
@@ -19,8 +21,15 @@ const getCountries = handleAsync(async (req, res) => {
  * registor Country function
  */
 const registorCountry = handleAsync(async (req, res) => {
+ let message = res.__('registerSuccess','country')
   let counteries = await operationService.registorCountry(req.body);
-  res.status(200).send(new ResponseApi(200, "successfully registored"));
+  if(counteries){
+   return res.status(status.OK).send(new ResponseApi(200, message));
+  }
+  else{
+    message = res.__('registerError','country')
+    throw new ApiError(status.NOT_ACCEPTABLE,message)
+  }
 });
 
 /**
@@ -28,10 +37,12 @@ const registorCountry = handleAsync(async (req, res) => {
  * update Country function
  */
 const editCountry = handleAsync(async (req, res) => {
+ let message = res.__('updateSuccess','country')
   let counteries = await operationService.editCountry(req.body);
   if (counteries) {
-    res.status(200).send(new ResponseApi(200, "successfully updated"));
+   return res.status(200).send(new ResponseApi(200, message));
   }
+  message = res.__('registerError','country')
   throw new ApiError(401, "Something Wrong");
 });
 
@@ -40,8 +51,14 @@ const editCountry = handleAsync(async (req, res) => {
  * update Country function
  */
 const deleteCountry = handleAsync(async (req, res) => {
+ let message = res.__('deleteSuccess','country')
   let counteries = await operationService.deleteCountry(req.params.countryId);
-  res.status(200).send(new ResponseApi(200, "successfully delted"));
+  if (counteries) {
+    return  res.status(status.OK).send(new ResponseApi(200, message));
+  }
+  message = res.__('deleteError','country')
+  throw new ApiError(401, message);
+  
 });
 
 /**
@@ -178,6 +195,72 @@ const deleteCurrency = handleAsync(async (req, res) => {
   }
   throw new ApiError(401, "Something Wrong");
 });
+
+
+/**
+ * @description
+ * get Payment
+ */
+ const getPayment = handleAsync(async (req, res) => {
+  let payment = await operationService.getPayment();
+  res.status(200).send(new ResponseApi(200, 'successfully got data',payment));
+});
+
+/**
+ * @description
+ * registor Payment
+ */
+ const registorPayment = handleAsync(async (req, res) => {
+  let payment = await operationService.registorPayment(req.body);
+  if (payment) {
+    res.status(200).send(new ResponseApi(200, "successfully registored"));
+  }
+  throw new ApiError(401, "Something Wrong");
+});
+
+/**
+ * @description
+ * edit Payment
+ */
+ const editPayment = handleAsync(async (req, res) => {
+  let payment = await operationService.editPayment(req.body);
+  if (payment) {
+    res.status(200).send(new ResponseApi(200, "successfully updated"));
+  }
+  throw new ApiError(401, "Something Wrong");
+});
+
+/**
+ * @description
+ * delete Payment
+ */
+ const deletePayment = handleAsync(async (req, res) => {
+  let payment = await operationService.deletePayment(req.body.params.paymentId);
+  if (payment) {
+    res.status(200).send(new ResponseApi(200, "successfully updated"));
+  }
+  throw new ApiError(401, "Something Wrong");
+});
+
+/**
+ * @description
+ * get Status
+ */
+ const getStatus = handleAsync(async (req, res) => {
+  let status = await operationService.getStatus();
+  res.status(200).send(new ResponseApi(200, 'successfully got data',status));
+});
+
+/**
+ * @description
+ * registor Status
+ */
+ const registorStatus = handleAsync(async (req, res) => {
+  let status = await operationService.registorStatus();
+  res.status(200).send(new ResponseApi(200, 'successfully registored',status));
+});
+
+
 module.exports = {
   getCountries,
   getState,
@@ -195,4 +278,10 @@ module.exports = {
   registorCurrency,
   editCurrency,
   deleteCurrency,
+  getPayment,
+  registorPayment,
+  editPayment,
+  deletePayment,
+  getStatus,
+  registorStatus
 };

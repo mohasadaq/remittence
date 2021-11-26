@@ -2,10 +2,10 @@ const { executeQuery } = require("../config/database");
 
 //#region get Customers
 const getRemittence = () => {
-return executeQuery(`select senderid,cs.name as sendername,rs.name  as recievername,
-paymant.paymanttype,currancy.currancyname,sendingfrom.countryname as sendingfrom,
+return executeQuery(`select remittenceid,senderid,cs.name as sendername,rs.name  as recievername,
+paymant.paymanttype,currancy.currancyname,currancy.currancycode,sendingfrom.countryname as sendingfrom,
 sendingto.countryname as sendingto,remittence.sendingamount,remittence.RECIEVINGAMOUNT,
-charge,datecreated
+charge,statusname,datecreated
 from remittence 
 left join 
 (select customerid,name from customer) cs on cs.customerid=remittence.senderid
@@ -21,6 +21,7 @@ select countryid,countryname from country
 left join(
 select countryid,countryname from country
 ) sendingto on sendingto.countryid=remittence.sendingto
+join status on status.statusid=remittence.statusid
 `);
 }
 //#endregion
@@ -30,20 +31,28 @@ return executeQuery(`insert into remittence(
 remittenceid,receiverid,senderid,userid,paymantid,sendingcurrencyid,recievingcurrencyid,sendingfrom,
 sendingto,sendingamount,RECIEVINGAMOUNT,charge,datecreated) values(
 REMITTENCESEQ.nextval,:receiverid,:senderid,:userid,:paymantid,:sendingcurrencyid,
-recievingcurrencyid,sendingfrom,:sendingto,:sendingamount,:RECIEVINGAMOUNT,:charge,SYSDATE)
+:recievingcurrencyid,:sendingfrom,:sendingto,:sendingamount,:receivingamount,:charge,SYSDATE)
 `,[remittence.receiverid,remittence.senderid,remittence.userid,
 remittence.paymantid,remittence.sendingcurrencyid,remittence.recievingcurrencyid,
-remittence.sendingfrom,
-remittence.sendingto,remittence.sendingamount,remittence.RECIEVINGAMOUNT,remittence.charge]);
+remittence.sendingfrom,remittence.sendingto,remittence.sendingamount,remittence.receivingamount,
+remittence.charge]);
 }
 
 deleteRemittence=(remittenceId)=>{
-  executeQuery(`
+  return executeQuery(`
   delete remittence where remittenceid=:remittenceid
   `,[remittenceId])
 }
+
+aproveRemittence=(remittence)=>{
+  return executeQuery(`
+  update remittence set statusid=:status, userid=:userid where remittenceid=:remittenceid
+  `,[remittence.status,remittence.userid,remittence.remittenceId])
+}
+
 module.exports = {
   getRemittence,
   registorRemittence,
-  deleteRemittence
+  deleteRemittence,
+  aproveRemittence
 };

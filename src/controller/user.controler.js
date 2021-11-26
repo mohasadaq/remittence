@@ -45,7 +45,7 @@ const createUser = handleAsync(async (req, res) => {
     response = new ApiResponse(status.OK, message); // prepare response
   }
   else{
-    message = res.__('registerError')
+    message = res.__('updateError')
     throw new ApiError(status.NOT_ACCEPTABLE,message)
   }
   logger.info(response); // log response as info
@@ -56,9 +56,9 @@ const createUser = handleAsync(async (req, res) => {
 //#region update user
 const editUser = handleAsync(async (req, res) => {
   let user = await userService.updateUser(req.body);
-
+  let message = res.__('updateSuccess')
   if (user) {
-    response = new ApiResponse(res.statusCode, "successfuly updated the user"); // prepare response
+    response = new ApiResponse(res.statusCode, message); // prepare response
   } else {
     throw new ApiError(status.NOT_ACCEPTABLE, "Id not exists ..");
   }
@@ -70,8 +70,9 @@ const editUser = handleAsync(async (req, res) => {
 //#region delete user ...
 const deleteUser = handleAsync(async (req, res) => {
   let user = await userService.deleteUser(req.params.userId);
+  let message = res.__('deleteSuccess')
   if (user) {
-    response = new ApiResponse(res.statusCode, "successfuly deleted the user");
+    response = new ApiResponse(res.statusCode, message);
   } else {
     throw new ApiError(status.NOT_ACCEPTABLE, "Id not exists ..");
   }

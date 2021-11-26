@@ -1,6 +1,11 @@
 const { permisionModel } = require("../model"); // import permission model
 
 const getPermissions = () => permisionModel.getPermissions(); // get permision list from the model
+const registorPermission = (permision) => permisionModel.registorPermission(permision); // registor permision list from the model
+const editPermission = (permision) => permisionModel.editPermission(permision); // registor permision list from the model
+const deletePermission = (permisionId) => permisionModel.deletePermission(permisionId); // registor permision list from the model
+
+
 const getRolePermissions = (userRole) => permisionModel.getRolePermissions(userRole); // get permision list from the model
 
 
@@ -11,4 +16,6 @@ const deleteRole = (roleId) => permisionModel.deleteRole(roleId); // delete Role
 
 module.exports = { getPermissions,getRolePermissions,getRoles,registorRole,
 editRole,
-deleteRole };
+deleteRole ,registorPermission,
+editPermission,
+deletePermission};

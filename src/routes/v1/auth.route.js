@@ -16,6 +16,10 @@ router
   ) // customerlogin
 
   .get("/permission", auth, permissionController.permissions) // permission List
+  .post("/permission", auth, permissionController.registorPermission) // registor permission 
+  .put("/permission", auth, permissionController.editPermission) // edit permission 
+  .delete("/permission/:permissionId", auth, permissionController.deletePermission) // delete permission 
+
   .post("/rolepermission", auth, permissionController.getRolePermissions) // permission List
 
   .get("/role", auth, permissionController.getRoles) // role List

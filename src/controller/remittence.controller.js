@@ -10,10 +10,10 @@ let error, response;
 // remittences List conroller
 const getRemittence = handleAsync(async (req, res, next) => {
   let remittences = await remittenceService.getRemittence();
-  let successmessage = res.__('message');
+  let successmessage = res.__("message");
   response = new ApiResponse(status.OK, successmessage, remittences); // prepare response
   logger.info(response); //  log as info
-  res.status(status.OK).send(response)
+  res.status(status.OK).send(response);
 });
 
 //#endregion
@@ -21,24 +21,28 @@ const getRemittence = handleAsync(async (req, res, next) => {
 //#region create remittence
 const registorRemittence = handleAsync(async (req, res) => {
   let remittence = await remittenceService.registorRemittence(req.body);
-  let message = res.__('registerSuccess')
+  let message = res.__("registerSuccess");
   if (remittence) {
     response = new ApiResponse(status.OK, message); // prepare response
-  }
-  else{
-    message = res.__('registerError')
-    throw new ApiError(status.NOT_ACCEPTABLE,message)
+  } else {
+    message = res.__("registerError");
+    throw new ApiError(status.NOT_ACCEPTABLE, message);
   }
   logger.info(response); // log response as info
-  res.status(status.OK).send(response)
+  res.status(status.OK).send(response);
 });
 //#endregion
 
 //#region delete remittence ...
 const deleteRemittence = handleAsync(async (req, res) => {
-  let remittence = await remittenceService.deleteRemittence(req.params.remittenceId);
+  let remittence = await remittenceService.deleteRemittence(
+    req.params.remittenceId
+  );
   if (remittence) {
-    response = new ApiResponse(res.statusCode, "successfuly deleted the remittence");
+    response = new ApiResponse(
+      res.statusCode,
+      "successfuly deleted the remittence"
+    );
   } else {
     throw new ApiError(status.NOT_ACCEPTABLE, "Id not exists ..");
   }
@@ -46,6 +50,25 @@ const deleteRemittence = handleAsync(async (req, res) => {
   res.send(response);
 });
 
+//#region aprove remittence ...
+const aproveRemittence = handleAsync(async (req, res) => {
+  let remittence = await remittenceService.aproveRemittence(req.body);
+  if (remittence) {
+   res.status(status.OK).send(new ApiResponse(
+      status.OK,
+      `successfuly aproved the remittence`
+    ));
+  } else {
+    throw new ApiError(status.NOT_ACCEPTABLE, "Something Wrong ..");
+  }
+  logger.info(response);
+});
+
 //#endregion
 
-module.exports = { getRemittence,registorRemittence,deleteRemittence };
+module.exports = {
+  getRemittence,
+  registorRemittence,
+  deleteRemittence,
+  aproveRemittence,
+};

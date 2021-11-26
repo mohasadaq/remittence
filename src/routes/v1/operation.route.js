@@ -26,4 +26,13 @@ router
   .put("/currency", auth, operationController.editCurrency) // edit Currency
   .delete("/currency/:currancyId", auth, operationController.deleteCurrency) //delete Currency
 
+  .get("/payment", auth, operationController.getPayment) // get Payment
+  .post("/payment", auth, operationController.registorPayment) // registor Payment
+  .put("/payment", auth, operationController.editPayment) // edit Payment
+  .delete("/payment/:currancyId", auth, operationController.deletePayment) //delete Payment
+
+
+  .get("/status", auth, operationController.getStatus) // get Status
+  .post("/status", auth, operationController.registorStatus) // registor Status
+
 module.exports = router;

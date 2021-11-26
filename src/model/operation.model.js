@@ -97,7 +97,7 @@ where stateid=:stateId`,
 
 //#region get Currency
 const getCurrency = () =>
-  executeQuery(`select currancyid,currancyname,currancycode,countryname
+  executeQuery(`select currancyid,currancyname,currancycode,countryname,currancy.countryid,rate
 from currancy join country on currancy.countryid = country.countryid
 `);
 //#endregion
@@ -105,18 +105,19 @@ from currancy join country on currancy.countryid = country.countryid
 //#region registor Currency
 const registorCurrency = (currancy) =>
   executeQuery(
-    `insert into currancy(currancyid,currancyname,currancycode,countryid)
-values(CURRANCYSEQ.nextval,:currancyName,:currancyCode,:countryId)`,
-    [currancy.name, currancy.code, currancy.countryId]
+    `insert into currancy(currancyid,currancyname,currancycode,countryid,rate)
+values(CURRANCYSEQ.nextval,:currancyName,:currancyCode,:countryId,:rate)`,
+    [currancy.name, currancy.code, currancy.countryId, currancy.rate]
   );
 //#endregion
 
 //#region edit Currency
 const editCurrency = (currancy) =>
   executeQuery(
-    `update currancy set currancyname=:currancyName,currancycode=:currancyCode
+    `update currancy set currancyname=:currancyName,currancycode=:currancyCode,
+    rate=:rate
 where currancyid=:currancyId`,
-    [currancy.name, currancy.code, currancy.currencyId]
+    [currancy.name, currancy.code, currancy.rate, currancy.currencyId]
   );
 //#endregion
 
@@ -125,6 +126,43 @@ const deleteCurrency = (currancyId) =>
   executeQuery(`delete currancy where currancyid=:currancyId`, [currancyId]);
 //#endregion
 
+//#region get Payment
+const getPayment = () => executeQuery(`SELECT *from paymant`);
+//#endregion
+
+//#region registor Payment
+const registorPayment = (payment) =>
+  executeQuery(
+    `insert into paymant (paymantid,paymanttype) values(paymantseq.nextval,:paymant)`,
+    [payment.paymanttype]
+  );
+//#endregion
+
+//#region edit Payment
+const editPayment = (payment) =>
+  executeQuery(
+    `update  paymant set paymanttype=:paymant where paymantid=:paymantid`,
+    [payment.paymanttype]
+  );
+//#endregion
+
+//#region edit Payment
+const deletePayment = (paymentId) =>
+  executeQuery(`delete  paymant where paymantid=:paymantid`, [paymentId]);
+//#endregion
+
+//#region get Status
+const getStatus = () => executeQuery(`SELECT *from status`);
+//#endregion
+
+//#region get Status
+const registorStatus = (status) =>
+  executeQuery(`insert into status values(statusseq.nextval,:status)`, [
+    status.name,
+  ]);
+//#endregion
+
+//
 module.exports = {
   getCountries,
   registorCountry,
@@ -142,4 +180,10 @@ module.exports = {
   registorCurrency,
   editCurrency,
   deleteCurrency,
+  getPayment,
+  registorPayment,
+  editPayment,
+  deletePayment,
+  getStatus,
+  registorStatus,
 };

@@ -7,8 +7,13 @@ const { auth, authrization } = require("../../middleware");
 
 router
   .get("/", auth, remittenceController.getRemittence) // remittences
-  .post("/", auth, validator(remittenceValidation.remittenceSchema), 
-       remittenceController.registorRemittence) // registor remittence
-  .delete("/:remittenceId", auth, remittenceController.deleteRemittence) // registor remittence
+  .post(
+    "/",
+    auth,
+    validator(remittenceValidation.remittenceSchema),
+    remittenceController.registorRemittence
+  ) // registor remittence
+  .put("/", auth, remittenceController.aproveRemittence) // remittences
+  .delete("/:remittenceId", auth, remittenceController.deleteRemittence); // registor remittence
 
 module.exports = router;

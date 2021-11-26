@@ -1,7 +1,10 @@
 {
 	"loginSuccess": "You have been logged in %s",
-	"registerSuccess": "You have been registered. Please check your email to verify account",
+	"registerSuccess": "You have been registered %s",
+	"updateSuccess": "You have been updated %s",
+	"deleteSuccess": "You have been deleted %s",
 	"registerError": "Something went wrong with the registration please try again",
 	"updateError": "Something went wrong with the update please try again",
-	"message": "message"
+	"deleteError": "Something went wrong with the delete please try again",
+	"message": "successfully got data"
 }

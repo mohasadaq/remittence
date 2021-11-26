@@ -22,6 +22,14 @@ const editCurrency = (currancy) => operationModel.editCurrency(currancy); // edi
 const deleteCurrency = (currancyId) =>
   operationModel.deleteCurrency(currancyId); // edit Currency list from the model
 
+const getPayment = () => operationModel.getPayment(); // get payment list from the model
+const registorPayment = (payment) => operationModel.registorPayment(payment); // get payment registor from the model
+const editPayment = (payment) => operationModel.editPayment(payment); // get payment edit from the model
+const deletePayment = (paymentId) => operationModel.deletePayment(paymentId); // get payment delete from the model
+
+const getStatus = () => operationModel.getStatus(); // get Status list from the model
+const registorStatus = (status) => operationModel.registorStatus(status); // registor Status list from the model
+
 module.exports = {
   getCountries,
   registorCountry,
@@ -39,4 +47,10 @@ module.exports = {
   registorCurrency,
   editCurrency,
   deleteCurrency,
+  getPayment,
+  registorPayment,
+  editPayment,
+  deletePayment,
+  getStatus,
+  registorStatus,
 };

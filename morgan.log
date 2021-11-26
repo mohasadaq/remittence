@@ -1,2 +1,9 @@
-GET /v1/remittence 401 60 - 61.678 ms
-GET /v1/remittence 200 390 - 7140.209 ms
+PUT /v1/operation/countries 200 56 - 406.948 ms
+GET /v1/operation/countries 200 238 - 236.420 ms
+DELETE /v1/operation/countries/61 200 56 - 299.162 ms
+GET /v1/operation/countries 200 198 - 136.042 ms
+GET /v1/operation/countries 304 - - 452.895 ms
+POST /v1/operation/countries 200 59 - 82.258 ms
+GET /v1/operation/countries 200 238 - 269.706 ms
+DELETE /v1/operation/countries/62 200 56 - 77.563 ms
+GET /v1/operation/countries 200 198 - 106.717 ms

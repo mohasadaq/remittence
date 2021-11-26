@@ -1,6 +1,9 @@
 const { permissionService } = require("../service");
 const ResponseApi = require("../payload/ApiResponse");
 const { handleAsync } = require("../util/util");
+const ApiError = require("../payload/ApiError");
+const { required } = require("joi");
+const status = require('http-status');
 
 /**
  * @description
@@ -12,6 +15,59 @@ const permissions = handleAsync(async (req, res) => {
     .status(200)
     .send(new ResponseApi(200, "successfully got data", permissionList));
 });
+
+/**
+ * @description
+ * registor Permission function
+ */
+ const registorPermission = handleAsync(async (req, res) => {
+  let permission = await permissionService.registorPermission(req.body);
+
+  if(permission){
+    res
+      .status(200)
+      .send(new ResponseApi(200, "successfully registored"));
+  }
+  else{
+    throw new ApiError(status.NOT_ACCEPTABLE,'something Wrong')
+  }
+});
+
+
+
+/**
+ * @description
+ * edit Permission function
+ */
+ const editPermission = handleAsync(async (req, res) => {
+  let permission = await permissionService.editPermission(req.body);
+  if(permission){
+    res
+      .status(200)
+      .send(new ResponseApi(200, "successfully updated"));
+  }
+  else{
+    throw new ApiError(status.NOT_ACCEPTABLE,'something Wrong')
+  }
+});
+
+
+/**
+ * @description
+ * delete  Permission function
+ */
+ const deletePermission = handleAsync(async (req, res) => {
+  let permission = await permissionService.deletePermission(req.params.permissionId);
+  if(permission){
+    res
+      .status(200)
+      .send(new ResponseApi(200, "successfully deleted"));
+  }
+  else{
+    throw new ApiError(status.NOT_ACCEPTABLE,'something Wrong')
+  }
+});
+
 
 /**
  * @description
@@ -67,4 +123,7 @@ module.exports = {
   editRole,
   deleteRole,
   getRolePermissions,
+  registorPermission,
+  editPermission,
+  deletePermission
 };
